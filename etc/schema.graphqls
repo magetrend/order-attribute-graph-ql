@@ -1,0 +1,66 @@
+#Order Attribute GraphQl Module
+
+type Query
+{
+    getCartAttributes (
+        cart_id: String! @doc(description: "Cart Mask ID")
+    ): GetCartAttributesOutput @resolver(class: "Magetrend\\OrderAttributeGraphQl\\Model\\Resolver\\GetCartAttributes") @doc(description:"Cart Attribute Datapassing")
+
+    getOrderAttributes (
+        order_id: Int @doc(description: "Order ID")
+    ): GetOrderAttributesOutput @resolver(class: "Magetrend\\OrderAttributeGraphQl\\Model\\Resolver\\GetOrderAttributes") @doc(description:"Order Attribute Datapassing")
+}
+
+type Mutation {
+    setCartAttributes(
+        input: SetCartAttributesInput @doc(description: "An input object for save one or more order attribute to the cart")
+    ): SetCartAttributesOutput @resolver(class: "Magetrend\\OrderAttributeGraphQl\\Model\\Resolver\\SetCartAttributes") @doc(description:"Save order attribute on a cart.")
+
+    setOrderAttributes(
+            input: SetOrderAttributesInput @doc(description: "An input object for save one or more order attribute to the cart")
+        ): SetOrderAttributesOutput @resolver(class: "Magetrend\\OrderAttributeGraphQl\\Model\\Resolver\\SetOrderAttributes") @doc(description:"Save order attribute on a cart.")
+}
+
+type GetOrderAttributesOutput
+{
+    attributes: [attributeOutputData]! @doc(description: "List of order attribute values")
+}
+
+type GetCartAttributesOutput
+{
+    attributes: [attributeOutputData]! @doc(description: "List of attribute values")
+}
+
+input SetOrderAttributesInput
+{
+    order_id: String! @doc(description: "Order Entity Id")
+    attributes: [attributeInputData]! @doc(description: "Array of pair attribute_code-value")
+}
+
+input SetCartAttributesInput
+{
+    cart_id: String! @doc(description: "Cart Mask Id")
+    attributes: [attributeInputData]! @doc(description: "Array of pair attribute_code-value")
+}
+
+type SetOrderAttributesOutput
+{
+    attributes: [attributeOutputData]! @doc(description: "List of order attribute values")
+}
+
+type SetCartAttributesOutput
+{
+    attributes: [attributeOutputData]! @doc(description: "List of order attribute values")
+}
+
+input attributeInputData {
+    attribute_code: String @doc(description: "Order Attribute Code")
+    value: String @doc(description: "Value")
+}
+
+type attributeOutputData @doc(description: "Contains order/cart attribute  data") {
+    attributeCode: String! @doc(description: "Attribute Code")
+    label: String! @doc(description: "Attribute Label")
+    value: String! @doc(description: "Value")
+    valueText: String! @doc(description: "Text Value")
+}
